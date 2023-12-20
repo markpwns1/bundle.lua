@@ -1,0 +1,1 @@
+lua "src/main.lua" "src/main.lua" -i "?.lua" -o "bundle.lua" --minify
