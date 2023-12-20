@@ -25,7 +25,7 @@ Options:
 
 Note that include paths must be in the form of `path/to/include/?.lua;another/path/?.lua` which is [the same format that Lua package search uses](https://www.lua.org/pil/8.1.html).
 
-Alternatively, you can `require("bundle")` which will return a function `bundle(entry_file: string, settings: table): string` which can be used like so:
+Alternatively, you can `require("bundle")` which will return a function `bundle(entry_file: string, settings: table): string, {string}` which will return the bundled file contents and a list of warnings that were generated. Here's an example of its use as a module:
 ```lua
 local bundle = require("bundle")
 
