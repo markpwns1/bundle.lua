@@ -23,6 +23,8 @@ Options:
     -h, --help               Prints this help message
 ```
 
+Note that include paths must be in the form of `path/to/include/?.lua;another/path/?.lua` which is [the same format that Lua package search uses](https://www.lua.org/pil/8.1.html).
+
 Alternatively, you can `require("bundle")` which will return a function `bundle(entry_file: string, settings: table): string` which can be used like so:
 ```lua
 local bundle = require("bundle")
