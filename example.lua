@@ -3,7 +3,7 @@
 
 local bundle = require("bundle")
 
-local bundled = bundle("example.lua", {
+local bundled, warnings = bundle("example.lua", {
     include_paths = {
         "?.lua"
     },
@@ -15,3 +15,7 @@ local bundled = bundle("example.lua", {
 })
 
 print(bundled)
+print(tostring(#warnings) .. " warnings")
+for _, warning in ipairs(warnings) do
+    print(" - " .. warning)
+end

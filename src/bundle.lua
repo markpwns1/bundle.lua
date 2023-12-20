@@ -10,6 +10,12 @@ local function char_at(str, i)
     return str:sub(i, i)
 end
 
+local function log(str)
+    if settings.verbose then
+        print(str)
+    end
+end
+
 -- returns minified contents of a file (or original contents if settings.minify is false)
 -- and a list of all require calls in the file
 local function process_file(f)
@@ -45,7 +51,10 @@ local function process_file(f)
         end
 
         if first_line then
-            if line == "-- generated with bundle.lua" then explore = false end
+            if line == "-- generated with bundle.lua" then 
+                log("Encountered bundle.lua header, will not resolve dependencies.")
+                explore = false 
+            end
             first_line = false
         elseif search_depth > 0 and preserve_original_content then
             write("\n")
@@ -239,6 +248,7 @@ local function array_contains(arr, val)
     return false
 end
 
+local warnings = {}
 local modules = {}
 -- opens loads all the modules in the `requires` list and adds them to the `modules` table
 -- and recursively does the same to all the modules that those modules require
@@ -248,6 +258,7 @@ local function explore_requires(requires)
         if not modules[module] and not array_contains(settings.ignore_modules, module) then
             local file, full_path = path.open_module_file(settings.include_paths, module)
             if file then
+                log("Processing module '" .. module .. "' from " .. full_path .. "...")
                 local processed = process_file(file)
                 file:close()
                 modules[module] = {
@@ -256,7 +267,11 @@ local function explore_requires(requires)
                 }
                 explore_requires(processed.requires)
             else
-                print("WARNING: module '" .. module .. "' not found", 1)
+                local warning = "module '" .. module .. "' not found"
+                if not settings.suppress_warnings then
+                    log("WARNING: " .. warning)
+                end
+                table.insert(warnings, warning)
             end
         end
     end
@@ -264,9 +279,11 @@ end
 
 local function bundle(entry_file, s)
     modules = {}
+    warnings = {}
     s.ignore_modules = s.ignore_modules or {}
     settings = s
 
+    log("Processing entry file '" .. entry_file .. "'...")
     local entry_file_handle = io.open(entry_file, "r")
     local entry_file_info = process_file(entry_file_handle)
     entry_file_handle:close()
@@ -310,8 +327,9 @@ local function bundle(entry_file, s)
         write(" ")
     end
     write("end\n")
+    log("Bundle complete.")
 
-    return output
+    return output, warnings
 end
 
 return bundle
