@@ -65,5 +65,5 @@ Essentially, it minifies your entry file and uses the minified file as a kind of
 ## Building
 The `bundle.lua` is self-hosted, and you can build the project by using any one of the files `build.bat`, `build.sh`, or `build.lua`, all of which just run the command
 ```
-lua "src/main.lua" "src/main.lua" -i "?.lua" -o "bundle.lua" --minify
+lua "src/main.lua" "src/main.lua" -i "?.lua" -o "bundle.lua" --minify --verbose
 ```
