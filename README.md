@@ -1,6 +1,6 @@
 
 # bundle.lua
-A zero-dependency Lua utility to pack an entire project into one file. Suitable for environments that only let you run a single script, like in certain video games or programs.
+A self-hosted, zero-dependency Lua utility to pack an entire project into one file. Suitable for environments that only let you run a single script, like in certain video games or programs.
 
 ## Installation
 Just copy the file `bundle.lua` inside the repo into your project.
