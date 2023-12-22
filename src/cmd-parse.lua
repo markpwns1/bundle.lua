@@ -23,7 +23,7 @@ local function parse_args(args)
     end
     
     local entry_file = args[1]
-    local include_paths = {}
+    local include_paths = { "?", "?.lua" }
     local output_file = path.get_filename(entry_file) .. "_bundle.lua"
     local minify = false
     local animal_hash = true
@@ -35,6 +35,7 @@ local function parse_args(args)
     while i <= #args do
         if args[i] == "-i" then
             i = i + 1
+            include_paths = {}
             for path in args[i]:gmatch("[^;]+") do
                 table.insert(include_paths, path)
             end

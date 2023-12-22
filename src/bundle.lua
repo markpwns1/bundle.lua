@@ -297,7 +297,7 @@ local function bundle(entry_file, s)
     end
 
     write("-- generated with bundle.lua\n")
-    write("-- " .. generate_animal_hash() .. "\n")
+    if settings.animal_hash then write("-- " .. generate_animal_hash() .. "\n") end
     write("-- " .. os.date("%Y-%m-%d %H:%M:%S") .. "\n\n")
     write("local __modules = {}\n")
     write("local function require(module_name) local module = __modules[module_name] if module then return module() else error(\"module not found: \" .. module_name, 2) end end\n")
